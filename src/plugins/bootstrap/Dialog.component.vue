@@ -1,5 +1,5 @@
 <template>
-  <div :id="dialog_id" class="modal fade" tabindex="-1" aria-hidden="true">
+  <div ref="dialog" class="modal fade" tabindex="-1" aria-hidden="true">
     <div
       class="modal-dialog"
       :class="{ 'modal-dialog-centered': config && config.centered }"
@@ -82,7 +82,6 @@
 </template>
 
 <script>
-import bootstrap from "bootstrap/dist/js/bootstrap.js";
 const INTERVAL_INTERDIALOG = 500;
 
 export default {
@@ -92,7 +91,6 @@ export default {
   },
   data: () => {
     return {
-      dialog_id: "dialog-" + Date.now(),
       config: undefined,
       action: undefined,
       wait_cancel: false,
@@ -104,12 +102,9 @@ export default {
       if (this.instance) {
         return this.instance;
       }
-      const elem = document.getElementById(this.dialog_id);
-      if (elem) {
-        elem.addEventListener("hidden.bs.modal", () => this.close(null, true));
-        return (this.instance = new bootstrap.Modal(elem));
-      }
-      return null;
+      const elem = this.$refs.dialog;
+      elem.addEventListener("hidden.bs.modal", () => this.close(null, true));
+      return (this.instance = new this.$bootstrap.Modal(elem));
     },
 
     show() {

@@ -25,7 +25,6 @@
 </template>
 
 <script>
-import bootstrap from "bootstrap/dist/js/bootstrap.bundle.js"
 
 export default {
   props: {
@@ -58,7 +57,7 @@ export default {
 
     close(id) {
       const elem = document.getElementById(id);
-      const instance = new bootstrap.Alert(elem);
+      const instance = new this.$bootstrap.Alert(elem);
       instance.close();
     },
   },

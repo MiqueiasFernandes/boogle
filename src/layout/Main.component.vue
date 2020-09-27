@@ -3,6 +3,7 @@
   <Sidebar ref="sidebar" />
   <div class="container container-nav-fix">
     <Alert />
+    <Dialog />
     <router-view />
   </div>
   <Footer ref="footer" />

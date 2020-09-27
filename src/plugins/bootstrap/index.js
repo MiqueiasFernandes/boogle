@@ -4,7 +4,7 @@ import bootstrap from "bootstrap/dist/js/bootstrap.bundle.js"
 
 import Icon from './Icon.component.vue'
 import Alert from './Alert.component.vue'
-//import Dialog from './Dialog.component.vue'
+import Dialog from './Dialog.component.vue'
 //import Toast from './Toast.component.vue'
 
 // install: npm install bootstrap@next bootstrap-icons
@@ -43,6 +43,8 @@ import Alert from './Alert.component.vue'
 
 export default {
     install(app) {
+
+        app.config.globalProperties.$bootstrap = bootstrap
 
         //Icon
         app.component("Icon", Icon)
@@ -136,7 +138,7 @@ export default {
         };
 
         //Dialog
-        //app.component("Dialog", Dialog)
+        app.component("Dialog", Dialog)
         app.config.globalProperties.$dialog_handler = (dc) => this.dialog_component = dc;
         app.config.globalProperties.$dialog = (config, action) => {
             if (this.dialog_component) {
@@ -152,10 +154,6 @@ export default {
                 this.toast_component.push(title, text);
             }
         };
-
-
-
-
 
         // Helpers
         // Login Dialog

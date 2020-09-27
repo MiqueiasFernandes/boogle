@@ -18,7 +18,7 @@
     </ul>
   </div>
 
-  <button @click="$alert('prefix', 'message', 'btn', 'dark')" v-btn>alert</button>
+  <button @click="$alert('prefix', 'message', 'btn', 'dark', 5)" v-btn>alert</button>
 
   <div v-alert.closeable><strong>warning!</strong> this is a alert.</div>
   <div v-alert:info><strong>show!</strong> this is a alert ok.</div>

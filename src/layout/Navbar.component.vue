@@ -47,10 +47,20 @@
             <Icon icon="search" btn />
           </button>
         </form>
-        <button v-btn.outline>
+        <button @click="login" v-btn.outline>
           <Icon icon="person" btn />
         </button>
       </div>
     </div>
   </nav>
 </template>
+
+<script>
+export default {
+  methods: {
+    login() {
+      this.$login_dialog((a, r) => console.log(a, r));
+    },
+  },
+};
+</script>
