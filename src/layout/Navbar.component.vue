@@ -1,5 +1,12 @@
 <template>
-  <nav class="navbar navbar-expand-lg navbar-light bg-light fixed-top">
+  <nav
+    class="navbar navbar-expand-lg navbar-light bg-light shadow"
+    :class="{
+      lg: !fixed,
+      'fixed-top': fixed,
+      container: !fixed,
+    }"
+  >
     <div class="container-fluid">
       <a class="navbar-brand" href="#">
         <img
@@ -57,6 +64,12 @@
 
 <script>
 export default {
+  props: {
+    fixed: {
+      type: Boolean,
+      default: false,
+    },
+  },
   methods: {
     login() {
       this.$login_dialog((a, r) => console.log(a, r));
@@ -64,3 +77,9 @@ export default {
   },
 };
 </script>
+
+<style scoped>
+.lg {
+  height: 5rem;
+}
+</style>
