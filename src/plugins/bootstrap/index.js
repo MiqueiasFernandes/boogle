@@ -6,6 +6,7 @@ import Icon from './Icon.component.vue'
 import Alert from './Alert.component.vue'
 import Dialog from './Dialog.component.vue'
 import Toast from './Toast.component.vue'
+import Dropdown from './Dropdown.component.vue'
 
 // install: npm install bootstrap@next bootstrap-icons
 // icons:   cp node_modules/bootstrap-icons/bootstrap-icons.svg src/assets/
@@ -145,6 +146,9 @@ export default {
                 this.dialog_component.open(config, action);
             }
         };
+
+        //Dropdown
+        app.component("Dropdown", Dropdown)
 
         //Toast
         app.component("Toast", Toast)

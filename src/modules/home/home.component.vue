@@ -1,6 +1,14 @@
 <template>
   <h1>home view works!</h1>
 
+  <p>
+    <Dropdown
+      title="Meu dropdown"
+      :options="['a', 'b', 'c']"
+      @choose="choose"
+    />
+  </p>
+
   <div class="dropdown">
     <button
       class="btn btn-secondary dropdown-toggle"
@@ -18,8 +26,12 @@
     </ul>
   </div>
 
-  <button @click="$alert('prefix', 'message', 'btn', 'dark', 5)" v-btn>alert</button>
-  <button @click="$toast('title', 'message', 'detail')" v-btn:success>toast</button>
+  <button @click="$alert('prefix', 'message', 'btn', 'dark', 5)" v-btn>
+    alert
+  </button>
+  <button @click="$toast('title', 'message', 'detail')" v-btn:success>
+    toast
+  </button>
 
   <div v-alert.closeable><strong>warning!</strong> this is a alert.</div>
   <div v-alert:info><strong>show!</strong> this is a alert ok.</div>
@@ -45,3 +57,13 @@
     </li>
   </ul>
 </template>
+
+<script>
+export default {
+  methods: {
+    choose(e) {
+      console.log(e);
+    },
+  },
+};
+</script>
