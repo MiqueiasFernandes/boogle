@@ -1,7 +1,11 @@
 <template>
+  <Toast style="z-index:100"/>
   <Sidebar ref="sidebar" />
   <Navbar ref="navbar" :fixed="nav_fixed" />
-  <div class="container shadow-sm" :class="{ container_nav_fix: nav_fixed, container_nav: !nav_fixed }">
+  <div
+    class="container shadow-sm"
+    :class="{ container_nav_fix: nav_fixed, container_nav: !nav_fixed }"
+  >
     <Alert />
     <Dialog />
     <router-view />
@@ -38,7 +42,7 @@ export default {
 
 <style scoped>
 .container_nav {
-  margin-top: .3rem;
+  margin-top: 0.3rem;
   padding-top: 2rem;
 }
 .container_nav_fix {

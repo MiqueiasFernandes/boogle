@@ -5,7 +5,7 @@ import bootstrap from "bootstrap/dist/js/bootstrap.bundle.js"
 import Icon from './Icon.component.vue'
 import Alert from './Alert.component.vue'
 import Dialog from './Dialog.component.vue'
-//import Toast from './Toast.component.vue'
+import Toast from './Toast.component.vue'
 
 // install: npm install bootstrap@next bootstrap-icons
 // icons:   cp node_modules/bootstrap-icons/bootstrap-icons.svg src/assets/
@@ -28,9 +28,9 @@ import Dialog from './Dialog.component.vue'
 // Collapse     --- (complexo)
 // Dropdowns     X
 // List group   CSS
-// Modal        
+// Modal        OK
 // Navs         --- (complexo)
-// Navbar       CSS
+// Navbar       OK
 // Pagination   --- (facil)
 // Popovers     OK
 // Progress     --- (facil)
@@ -147,11 +147,11 @@ export default {
         };
 
         //Toast
-        //app.component("Toast", Toast)
+        app.component("Toast", Toast)
         app.config.globalProperties.$toast_handler = (tc) => this.toast_component = tc;
-        app.config.globalProperties.$toast = (title, text) => {
+        app.config.globalProperties.$toast = (title, text, detail) => {
             if (this.toast_component) {
-                this.toast_component.push(title, text);
+                this.toast_component.push(title, text, detail);
             }
         };
 

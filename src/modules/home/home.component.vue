@@ -19,6 +19,7 @@
   </div>
 
   <button @click="$alert('prefix', 'message', 'btn', 'dark', 5)" v-btn>alert</button>
+  <button @click="$toast('title', 'message', 'detail')" v-btn:success>toast</button>
 
   <div v-alert.closeable><strong>warning!</strong> this is a alert.</div>
   <div v-alert:info><strong>show!</strong> this is a alert ok.</div>

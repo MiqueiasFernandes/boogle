@@ -2,11 +2,9 @@
   <div
     aria-live="polite"
     aria-atomic="true"
-    style="position: relative; min-height: 200px"
+    style="position: relative"
   >
-    <!-- Position it -->
     <div style="position: absolute; top: 3em; right: 5em">
-      <!-- Then put toasts within -->
       <div
         v-for="toast in toast_queue"
         :id="toast.id"
@@ -16,7 +14,7 @@
         aria-live="assertive"
         aria-atomic="true"
         :data-delay="1000 * toast.time"
-        style="min-width: 15em;"
+        style="min-width: 15em"
       >
         <div class="toast-header">
           <strong class="mr-auto">{{ toast.title }}</strong>
@@ -39,7 +37,6 @@
 </template>
 
 <script>
-import bootstrap from "bootstrap/dist/js/bootstrap.js";
 export default {
   props: {
     time: {
@@ -62,7 +59,7 @@ export default {
   },
 
   methods: {
-    push(title, text, detail = 'Just now', time) {
+    push(title, text, detail = "Just now", time) {
       this.toast_queue.push({
         title,
         text,
@@ -79,7 +76,7 @@ export default {
         elem.addEventListener("hidden.bs.toast", () =>
           this.toast_queue.splice(this.toast_queue.indexOf(toast.id), 1)
         );
-        const tb = new bootstrap.Toast(elem);
+        const tb = new this.$bootstrap.Toast(elem);
         tb.show();
       }
     },
