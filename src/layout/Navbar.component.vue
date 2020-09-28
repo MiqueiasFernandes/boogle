@@ -30,7 +30,10 @@
       >
         <span class="navbar-toggler-icon"></span>
       </button>
-      <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <div
+        class="collapse navbar-collapse bg-light custom"
+        id="navbarSupportedContent"
+      >
         <ul class="navbar-nav mr-auto mb-2 mb-lg-0">
           <li class="nav-item">
             <router-link to="/" class="nav-link" active-class="active">
@@ -43,20 +46,22 @@
             </router-link>
           </li>
         </ul>
-        <form class="d-flex">
-          <input
-            class="form-control mr-2"
-            type="search"
-            placeholder="Search"
-            aria-label="Search"
-          />
-          <button v-btn:success.outline>
-            <Icon icon="search" btn />
+        <div class="enditems">
+          <div class="input-group mr-3" style="width: 20rem">
+            <input
+              class="form-control"
+              type="search"
+              placeholder="Search"
+              aria-label="Search"
+            />
+            <button v-btn:success.outline>
+              <Icon icon="search" btn />
+            </button>
+          </div>
+          <button @click="login" v-btn.outline>
+            <Icon icon="person" btn />
           </button>
-        </form>
-        <button @click="login" v-btn.outline>
-          <Icon icon="person" btn />
-        </button>
+        </div>
       </div>
     </div>
   </nav>
@@ -79,6 +84,14 @@ export default {
 </script>
 
 <style scoped>
+.enditems {
+  display: flex;
+  justify-content: space-evenly;
+}
+.custom {
+  z-index: 100;
+  text-align: center;
+}
 .lg {
   height: 5rem;
 }

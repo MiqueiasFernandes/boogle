@@ -37,7 +37,7 @@ import Dropdown from './Dropdown.component.vue'
 // Progress     --- (facil)
 // Scrollspy    ---
 // Spinners     OK
-// Toasts       
+// Toasts       OK
 // Tooltips     OK
 
 

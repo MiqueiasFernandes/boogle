@@ -5,7 +5,7 @@
       :class="{ 'modal-dialog-centered': config && config.centered }"
       :style="{ width: config && config.width }"
     >
-      <div class="modal-content">
+      <div class="modal-content shadow-lg">
         <div class="modal-header">
           <h5 class="modal-title" v-if="config">
             <Icon v-if="config.icon" :icon="config.icon" />
@@ -61,7 +61,7 @@
           </div>
         </div>
         <div
-          class="modal-footer"
+          class="modal-footer border-top-0"
           :class="{ btn_center: config.btn_center }"
           v-if="config"
         >
