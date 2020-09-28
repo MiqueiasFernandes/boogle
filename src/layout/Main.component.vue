@@ -3,7 +3,7 @@
   <Sidebar ref="sidebar" />
   <Navbar ref="navbar" :fixed="nav_fixed" />
   <div
-    class="container shadow-sm"
+    class="container shadow-sm p-5"
     :class="{ container_nav_fix: nav_fixed, container_nav: !nav_fixed }"
   >
     <Alert />
