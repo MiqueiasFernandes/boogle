@@ -1,13 +1,15 @@
 <template>
-  <Toast style="z-index:100"/>
+  <Toast style="z-index: 100" />
   <Sidebar ref="sidebar" />
   <Navbar ref="navbar" :fixed="nav_fixed" />
   <div
     class="container shadow-sm p-5"
     :class="{ container_nav_fix: nav_fixed, container_nav: !nav_fixed }"
+    @click="closeSidebar"
   >
     <Alert />
     <Dialog />
+    <button @click.stop="toggleSidebar" v-btn:danger>sidebar</button>
     <router-view />
   </div>
   <Footer ref="footer" />
@@ -35,6 +37,12 @@ export default {
     handleScroll() {
       this.nav_fixed =
         (document.documentElement.scrollTop || document.body.scrollTop) > 0;
+    },
+    toggleSidebar() {
+      this.$refs.sidebar.open();
+    },
+    closeSidebar() {
+      this.$refs.sidebar.close();
     },
   },
 };

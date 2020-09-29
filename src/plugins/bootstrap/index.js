@@ -54,8 +54,12 @@ export default {
         app.directive('btn', {
             mounted(el, b) {
                 var type = b.arg || 'primary'
-                type = b.modifiers && b.modifiers.outline ? 'outline-' + type : type
-                el.className += 'btn btn-' + type
+                if (b.modifiers) {
+                    type = b.modifiers.outline ? 'outline-' + type : type
+                    type += b.modifiers.lg ? ' btn-lg' : ''
+                    type += b.modifiers.sm ? ' btn-sm' : ''
+                }
+                el.className += ' btn btn-' + type
             }
         })
 

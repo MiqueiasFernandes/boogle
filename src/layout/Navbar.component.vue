@@ -1,6 +1,6 @@
 <template>
   <nav
-    class="navbar navbar-expand-lg navbar-light bg-light shadow"
+    class="navbar navbar-expand-lg navbar-light bg-light shadow custom"
     :class="{
       lg: !fixed,
       'fixed-top': fixed,
@@ -94,5 +94,8 @@ export default {
 }
 .lg {
   height: 5rem;
+}
+.custom {
+  z-index: 1030;
 }
 </style>
