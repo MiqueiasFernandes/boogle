@@ -1,3 +1,7 @@
+
+import { ADD_USER } from './mutation-types'
+
+
 const state = ({
     usuarios: [
         { id: '001', nome: 'Mikeias', idade: 27 },
@@ -8,15 +12,13 @@ const state = ({
 const getters = {
     TODOS_USUARIOS: state => state.usuarios,
     BY_ID: (state, getters) => (id) => {
-        console.log(id);
-        const u = getters.TODOS_USUARIOS.find(u => u.id === id);
-        console.log(u);
+        const u = getters.TODOS_USUARIOS.find(u => u.id === id)
         return u;
     }
 }
 
 const mutations = {
-    ADD_USER: (state, payload) => {
+    [ADD_USER]: (state, payload) => {
         payload.id = (payload.idade + '').padStart(3, '0');
         state.usuarios.push(payload)
     }

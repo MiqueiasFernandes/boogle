@@ -9,10 +9,9 @@
   >
     <Alert />
     <Dialog />
-    <button @click.stop="toggleSidebar" v-btn:danger>sidebar</button>
     <router-view />
   </div>
-  <Footer ref="footer" />
+  <Footer ref="footer" @click="closeSidebar" />
 </template>
 
 <script>

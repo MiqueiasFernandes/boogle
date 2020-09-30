@@ -25,9 +25,16 @@
             {{ config.text }}
           </p>
 
-          <div v-if="config.form">
+          <div
+            v-if="config.form"
+            :class="{
+              'needs-validation': !config.form_val,
+              'was-validated': config.form_val,
+            }"
+          >
             <div
-              class="input-group flex-nowrap"
+              :style="input.style_div"
+              class="mb-3 input-group"
               v-for="(input, i) in config.form"
               :key="i"
             >
@@ -50,6 +57,10 @@
                 :id="input.id"
                 :style="input.style"
                 class="form-control"
+                :class="{
+                  'is-valid': config.form_val && input.val,
+                  'is-invalid': config.form_val && !input.val,
+                }"
                 :type="input.type"
                 :placeholder="input.placeholder"
                 :aria-label="input.label"
@@ -57,6 +68,18 @@
                 aria-describedby="addon-wrapping"
                 @keydown.enter="close('default')"
               />
+              <div
+                v-if="config.form_val && input.val && input.val_text"
+                class="valid-feedback"
+              >
+                {{ input.val_text }}
+              </div>
+              <div
+                v-if="config.form_val && !input.val && input.inval_text"
+                class="invalid-feedback"
+              >
+                {{ input.inval_text }}
+              </div>
             </div>
           </div>
         </div>
@@ -158,6 +181,7 @@ export default {
       }
 
       if (config.form) {
+        let val = false;
         config.form.forEach((input) => {
           if (!input.id) {
             input.id = input.label;
@@ -165,7 +189,9 @@ export default {
           if (!input.label) {
             input.label = input.id;
           }
+          val = val || input.validate;
         });
+        config.form_validate = val;
       }
 
       if (!config.events) {
@@ -210,12 +236,25 @@ export default {
 
     close(action = "close", cancel = false) {
       if (!this.wait_cancel && cancel) {
+        // triged by addEventListener .hidden
         this.config = null;
         this.action = null;
         return;
       }
-      if (!action && this.config) {
-        action = this.config.cancel;
+      if (this.config) {
+        if (!action) {
+          action = this.config.cancel;
+        } else {
+          if (
+            this.config.form_validate &&
+            this.config.form.some(
+              (i) => i.validate && !(i.val = i.validate(i.value))
+            )
+          ) {
+            this.config.form_val = true;
+            return;
+          }
+        }
       }
       this.wait_cancel = false;
       this.hide();

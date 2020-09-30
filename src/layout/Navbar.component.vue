@@ -10,9 +10,9 @@
     <div class="container-fluid">
       <a class="navbar-brand" href="#">
         <img
-          src="https://v5.getbootstrap.com/docs/5.0/assets/brand/bootstrap-solid.svg"
+          src="@/assets/bootstrap-logo.svg"
           width="30"
-          height="30"
+          height="24"
           class="d-inline-block align-top"
           alt=""
           loading="lazy"

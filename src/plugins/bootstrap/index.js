@@ -7,6 +7,7 @@ import Alert from './Alert.component.vue'
 import Dialog from './Dialog.component.vue'
 import Toast from './Toast.component.vue'
 import Dropdown from './Dropdown.component.vue'
+import Pagination from './Pagination.component.vue'
 
 // install: npm install bootstrap@next bootstrap-icons
 // icons:   cp node_modules/bootstrap-icons/bootstrap-icons.svg src/assets/
@@ -32,7 +33,7 @@ import Dropdown from './Dropdown.component.vue'
 // Modal        OK
 // Navs         --- (complexo)
 // Navbar       OK
-// Pagination   --- (facil)
+// Pagination   OK
 // Popovers     OK
 // Progress     --- (facil)
 // Scrollspy    ---
@@ -49,6 +50,8 @@ export default {
 
         //Icon
         app.component("Icon", Icon)
+        //Pagination
+        app.component("Pagination", Pagination)
 
         //Button
         app.directive('btn', {
@@ -59,7 +62,10 @@ export default {
                     type += b.modifiers.lg ? ' btn-lg' : ''
                     type += b.modifiers.sm ? ' btn-sm' : ''
                 }
-                el.className += ' btn btn-' + type
+                ('btn btn-' + type).split(' ').forEach(c => el.classList.add(c))
+            },
+            updated() {
+                /* FIX IT: on updated elem lose btn classes!!! */
             }
         })
 
@@ -190,6 +196,7 @@ export default {
                         type: "text",
                         label_style:
                             "border-bottom-left-radius: 0 !important; border-bottom: 0 !important;",
+                        style_div: "margin-bottom: 0 !important;",
                         style:
                             "border-bottom-right-radius: 0 !important; border-bottom: 0 !important;",
                     },
