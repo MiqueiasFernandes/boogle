@@ -239,7 +239,7 @@ export default {
       if (this.config) {
         if (!action) {
           action = this.config.cancel;
-        } else {
+        } else if (action !== this.config.cancel) {
           if (
             this.config.form_validate &&
             this.config.form

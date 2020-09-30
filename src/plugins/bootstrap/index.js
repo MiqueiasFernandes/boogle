@@ -35,7 +35,7 @@ import Pagination from './Pagination.component.vue'
 // Navbar       OK
 // Pagination   OK
 // Popovers     OK
-// Progress     --- (facil)
+// Progress     CSS
 // Scrollspy    ---
 // Spinners     OK
 // Toasts       OK
