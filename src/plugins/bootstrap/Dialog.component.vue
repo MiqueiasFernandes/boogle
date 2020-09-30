@@ -25,13 +25,7 @@
             {{ config.text }}
           </p>
 
-          <div
-            v-if="config.form"
-            :class="{
-              'needs-validation': !config.form_val,
-              'was-validated': config.form_val,
-            }"
-          >
+          <form v-if="config.form" @submit="close('default')" novalidate>
             <div
               :style="input.style_div"
               class="mb-3 input-group"
@@ -65,6 +59,7 @@
                 :placeholder="input.placeholder"
                 :aria-label="input.label"
                 v-model="input.value"
+                :required="input.required"
                 aria-describedby="addon-wrapping"
                 @keydown.enter="close('default')"
               />
@@ -81,7 +76,7 @@
                 {{ input.inval_text }}
               </div>
             </div>
-          </div>
+          </form>
         </div>
         <div
           class="modal-footer border-top-0"
@@ -247,9 +242,13 @@ export default {
         } else {
           if (
             this.config.form_validate &&
-            this.config.form.some(
-              (i) => i.validate && !(i.val = i.validate(i.value))
-            )
+            this.config.form
+              .map(
+                /// use `map` to test all validators
+                /// true if has validate and not validate with current value
+                (i) => i.validate && !(i.val = i.validate(i.value))
+              )
+              .some((v) => v)
           ) {
             this.config.form_val = true;
             return;

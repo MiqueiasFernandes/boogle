@@ -9,6 +9,13 @@ import EditDialog from "@/shared/utils/edit.entity.dialog";
 import ChangeEntityAlert from "@/shared/utils/change.entity.alert";
 import UserMutations from "./mutation-types";
 
+import {
+  FormBuilder,
+  ValidatorRequired,
+  ValidatorRegex,
+  ValidatorRange,
+} from "../../shared/utils/formBuilder";
+
 export default {
   props: ["userId"],
   computed: {
@@ -19,41 +26,36 @@ export default {
   },
   mounted() {
     this.user = this.novo ? null : this.userById(this.userId);
-    EditDialog.show(
-      this,
-      this.novo ? "novo User" : "User " + this.user.id,
-      this.buildForm(this.novo ? {} : this.user),
-      this.novo ? this.createUser : this.editUserByFormm,
-      () => GoTo.back(this.$router)
-    );
+    if (this.user || this.novo) {
+      EditDialog.show(
+        this,
+        this.novo ? "novo User" : "User " + this.user.id,
+        this.buildForm(this.novo ? {} : this.user),
+        this.novo ? this.createUser : this.editUserByFormm,
+        () => GoTo.back(this.$router)
+      );
+    }
   },
   methods: {
     buildForm(user) {
-      return [
-        {
-          label: "Nome",
-          placeholder: "nome",
-          id: "nome",
-          type: "text",
-          value: user.nome,
-          validate: (v) => {
-            const val = v
-            console.log(val)
-            return true
-          },
-          val_text: "Nome esta correto!",
-          inval_text: "Nomer ruin!",
-        },
-        {
-          label: "Idade",
-          type: "number",
-          id: "idade",
-          value: user.idade,
-          validate: (v) => v && parseInt(v) > 5,
-          val_text: "Boa idade",
-          inval_text: "muito novo",
-        },
-      ];
+      return new FormBuilder()
+
+        .addField("nome")
+        .withLabel("Nome")
+        .withPlaceholder("nome")
+        .withValue(user.nome)
+        .withValidation([
+          new ValidatorRequired(),
+          new ValidatorRegex("[a-zA-Z]+ ([a-zA-Z]+\\s*)+", "nome incorreto."),
+        ])
+
+        .addField("idade")
+        .withType("number")
+        .withLabel("Idade")
+        .withValue(user.idade)
+        .withValidation([new ValidatorRequired(), new ValidatorRange(1, 100)])
+
+        .build();
     },
     editUserByFormm(user_data) {
       this.user.nome = user_data.nome;
