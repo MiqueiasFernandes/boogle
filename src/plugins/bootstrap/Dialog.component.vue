@@ -7,8 +7,14 @@
     >
       <div class="modal-content shadow-lg">
         <div class="modal-header">
-          <h5 class="modal-title" v-if="config">
-            <Icon v-if="config.icon" :icon="config.icon" />
+          <h5 class="modal-title d-flex align-items-center" v-if="config">
+            <Icon v-if="config.icon && !loading" :icon="config.icon" />
+            <span
+              v-if="loading"
+              style="width: 29px; height: 29px"
+              class="mr-1"
+              v-spiner
+            ></span>
             {{ config.title }}
           </h5>
           <button
@@ -64,13 +70,23 @@
                 @keydown.enter="close('default')"
               />
               <div
-                v-if="config.form_val && input.val && input.val_text"
+                v-if="
+                  config.form_val &&
+                  input.val &&
+                  input.val_text &&
+                  input.val_text.trim().length > 0
+                "
                 class="valid-feedback"
               >
                 {{ input.val_text }}
               </div>
               <div
-                v-if="config.form_val && !input.val && input.inval_text"
+                v-if="
+                  config.form_val &&
+                  !input.val &&
+                  input.inval_text &&
+                  input.inval_text.trim().length > 0
+                "
                 class="invalid-feedback"
               >
                 {{ input.inval_text }}
@@ -113,6 +129,7 @@ export default {
       action: undefined,
       wait_cancel: false,
       instance: undefined,
+      loading: false,
     };
   },
   methods: {
@@ -123,6 +140,10 @@ export default {
       const elem = this.$refs.dialog;
       elem.addEventListener("hidden.bs.modal", () => this.close(null, true));
       return (this.instance = new this.$bootstrap.Modal(elem));
+    },
+
+    setLoading(status) {
+      this.loading = status;
     },
 
     show() {
@@ -137,6 +158,12 @@ export default {
       const i = this.getInstance();
       if (i) {
         i.hide();
+      }
+    },
+
+    notify(text) {
+      if (this.config) {
+        this.config.text = text;
       }
     },
 
@@ -200,13 +227,30 @@ export default {
 
     open(config, action) {
       this.enqueue(config, action);
+      return this;
     },
 
     handleBtn(btn) {
+      if (btn.actionFn) {
+        const action = btn.actionFn(this.parseForm());
+        if (action) {
+          this.close(action);
+          return;
+        }
+      }
       if (btn.close) {
         this.close(btn.action);
       } else {
         this.sendAction(btn.action);
+      }
+    },
+
+    parseForm() {
+      if (this.config && this.config.form) {
+        return this.config.form.reduce(
+          (o, key) => ({ ...o, [key.id]: key.value }),
+          {}
+        );
       }
     },
 
@@ -216,17 +260,32 @@ export default {
           this.$emit(action);
         }
         if (this.action && action) {
-          this.action(
-            action,
-            this.config.form
-              ? this.config.form.reduce(
-                  (o, key) => ({ ...o, [key.id]: key.value }),
-                  {}
-                )
-              : null
-          );
+          const new_action = this.action(action, this.parseForm());
+          if (new_action) {
+            this.close(new_action);
+          }
         }
       }
+    },
+
+    resetValidation() {
+      this.config.form_val = false;
+    },
+
+    validateForm(action) {
+      const invalid =
+        this.config.form_validate &&
+        this.config.form
+          .map(
+            /// use `map` to test all validators
+            /// true if has validate and not validate with current value
+            (i) =>
+              i.validate &&
+              !(i.val = i.validate(i.value, this.config.form, action))
+          )
+          .some((v) => v);
+      this.config.form_val = true;
+      return !invalid;
     },
 
     close(action = "close", cancel = false) {
@@ -239,18 +298,13 @@ export default {
       if (this.config) {
         if (!action) {
           action = this.config.cancel;
+        } else if (action === "default") {
+          const btn = this.config.btns.filter((btn) => btn.isDefault);
+          if (btn && btn.length > 0) {
+            return this.handleBtn(btn[0]);
+          }
         } else if (action !== this.config.cancel) {
-          if (
-            this.config.form_validate &&
-            this.config.form
-              .map(
-                /// use `map` to test all validators
-                /// true if has validate and not validate with current value
-                (i) => i.validate && !(i.val = i.validate(i.value))
-              )
-              .some((v) => v)
-          ) {
-            this.config.form_val = true;
+          if (!this.validateForm(action)) {
             return;
           }
         }
@@ -266,6 +320,7 @@ export default {
     },
 
     enqueue(config, action) {
+      action = action || (() => {});
       config = this.parseConfig(config);
       if (config) {
         this.dialog_queue.push({ config, action });

@@ -87,6 +87,10 @@ export class Field {
         this.placeholder = undefined
         this.value = undefined
         this.validator = new Validator()
+        this.style_div = null
+        this.label_style = null
+        this.style = null
+        this.icon = null
     }
 
     parse() {
@@ -99,7 +103,11 @@ export class Field {
             validate: this.validator.build(),
             val_text: this.validator.validText(),
             inval_text: this.validator.invalidText(),
-            required: this.validator.hasValidator(ValidatorRequired)
+            required: this.validator.hasValidator(ValidatorRequired),
+            style_div: this.style_div,
+            label_style: this.label_style,
+            style: this.style,
+            icon: this.icon
         }
     }
 }
@@ -140,6 +148,26 @@ export class FormBuilder {
 
     withValidation(validators) {
         this.currentfield.validator.extendValidator(validators)
+        return this
+    }
+
+    withIcon(icon) {
+        this.currentfield.icon = icon
+        return this
+    }
+
+    style(style) {
+        this.currentfield.style_div = style
+        return this
+    }
+
+    styleLabel(style) {
+        this.currentfield.label_style = style
+        return this
+    }
+
+    styleInput(style) {
+        this.currentfield.style = style
         return this
     }
 

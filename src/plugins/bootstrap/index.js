@@ -8,6 +8,7 @@ import Dialog from './Dialog.component.vue'
 import Toast from './Toast.component.vue'
 import Dropdown from './Dropdown.component.vue'
 import Pagination from './Pagination.component.vue'
+import { FormBuilder, ValidatorCustom, ValidatorRegex } from "../../shared/utils/formBuilder"
 
 // install: npm install bootstrap@next bootstrap-icons
 // icons:   cp node_modules/bootstrap-icons/bootstrap-icons.svg src/assets/
@@ -50,6 +51,7 @@ export default {
 
         //Icon
         app.component("Icon", Icon)
+
         //Pagination
         app.component("Pagination", Pagination)
 
@@ -123,7 +125,7 @@ export default {
                 var type = 'spinner-' + (b.modifiers.grow ? 'grow' : 'border')
                 type += b.modifiers.sm ? (' ' + type + '-sm') : ''
                 const color = b.arg ? (' text-' + b.arg) : ''
-                el.className += type + color
+                el.classList.add(type + color)
                 el.setAttribute('role', "status")
                 el.innerHtml = '<span class="sr-only">Loading...</span>'
             }
@@ -153,7 +155,7 @@ export default {
         app.config.globalProperties.$dialog_handler = (dc) => this.dialog_component = dc;
         app.config.globalProperties.$dialog = (config, action) => {
             if (this.dialog_component) {
-                this.dialog_component.open(config, action);
+                return this.dialog_component.open(config, action);
             }
         };
 
@@ -171,7 +173,7 @@ export default {
 
         // Helpers
         // Login Dialog
-        app.config.globalProperties.$login_dialog = cb => app.config.globalProperties.$dialog(
+        app.config.globalProperties.$login_dialog = (login, register) => app.config.globalProperties.$dialog(
             {
                 width: "20em",
                 btn_center: true,
@@ -185,36 +187,42 @@ export default {
                         color: "info",
                         close: true,
                         icon: "person-plus",
-                    },
-                    { label: "Login", action: "login", close: true, icon: "power" },
-                ],
-                form: [
-                    {
-                        icon: "person-fill",
-                        label: "login",
-                        placeholder: "user@mail.com",
-                        type: "text",
-                        label_style:
-                            "border-bottom-left-radius: 0 !important; border-bottom: 0 !important;",
-                        style_div: "margin-bottom: 0 !important;",
-                        style:
-                            "border-bottom-right-radius: 0 !important; border-bottom: 0 !important;",
+                        actionFn: register
                     },
                     {
-                        icon: "key",
-                        label: "password",
-                        placeholder: "•••••",
-                        type: "password",
-                        style: "border-top-right-radius: 0 !important;",
-                        label_style: "border-top-left-radius: 0 !important;",
+                        label: "Login",
+                        action: "login",
+                        close: false,
+                        icon: "power",
+                        actionFn: login,
+                        isDefault: true
                     },
                 ],
+                form: new FormBuilder()
+
+                    .addField('login')
+                    .withIcon('person-fill')
+                    .withPlaceholder('user@email.com')
+                    .style('margin-bottom: 0 !important;')
+                    .styleLabel('border-bottom-left-radius: 0 !important; border-bottom: 0 !important;')
+                    .styleInput('border-bottom-right-radius: 0 !important; border-bottom: 0 !important;')
+                    .withValidation([
+                        new ValidatorRegex('\\S+@(\\S+\\.){1,}\\S+', ' ')
+                    ])
+
+                    .addField('password')
+                    .withIcon('key')
+                    .withPlaceholder("•••")
+                    .withType('password')
+                    .styleInput("border-top-right-radius: 0 !important;")
+                    .styleLabel("border-top-left-radius: 0 !important;")
+                    .withValidation([
+                        new ValidatorCustom(v => v && v.length > 3, 'password incorrect.')
+                    ])
+
+                    .build()
             },
-            (action, form) => {
-                if (cb) {
-                    cb(action, form)
-                }
-            }
+            (a, f) => a === 'default' ? login(f) : null
         );
     }
 }

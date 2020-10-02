@@ -77,7 +77,7 @@ export default {
   },
   methods: {
     login() {
-      this.$login_dialog((a, r) => console.log(a, r));
+      console.log("rotear /login");
     },
   },
 };

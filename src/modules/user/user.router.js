@@ -3,7 +3,10 @@ const routes = [
     {
         path: '/user',
         name: 'user',
-        component: () => import('./user.component.vue')
+        component: () => import('./user.component.vue'),
+        beforeEnter: (to, from, next) => {
+            console.log(to, from, next)
+        }
     },
     {
         // /user/1 => apresenta o user 1
