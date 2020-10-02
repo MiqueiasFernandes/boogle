@@ -1,13 +1,14 @@
 import "bootstrap/dist/css/bootstrap.min.css"
 import bootstrap from "bootstrap/dist/js/bootstrap.bundle.js"
 
-
 import Icon from './Icon.component.vue'
 import Alert from './Alert.component.vue'
 import Dialog from './Dialog.component.vue'
 import Toast from './Toast.component.vue'
 import Dropdown from './Dropdown.component.vue'
 import Pagination from './Pagination.component.vue'
+import ProgressBar from './ProgressBar.component.vue'
+
 import { FormBuilder, ValidatorCustom, ValidatorRegex } from "../../shared/utils/formBuilder"
 
 // install: npm install bootstrap@next bootstrap-icons
@@ -36,7 +37,7 @@ import { FormBuilder, ValidatorCustom, ValidatorRegex } from "../../shared/utils
 // Navbar       OK
 // Pagination   OK
 // Popovers     OK
-// Progress     CSS
+// Progress     OK
 // Scrollspy    ---
 // Spinners     OK
 // Toasts       OK
@@ -54,6 +55,9 @@ export default {
 
         //Pagination
         app.component("Pagination", Pagination)
+
+        //ProgressBar
+        app.component("ProgressBar", ProgressBar)
 
         //Button
         app.directive('btn', {

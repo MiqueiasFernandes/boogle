@@ -296,9 +296,8 @@ export default {
         return;
       }
       if (this.config) {
-        if (!action) {
-          action = this.config.cancel;
-        } else if (action === "default") {
+        action = action || this.config.cancel;
+        if (action === "default") {
           const btn = this.config.btns.filter((btn) => btn.isDefault);
           if (btn && btn.length > 0) {
             return this.handleBtn(btn[0]);

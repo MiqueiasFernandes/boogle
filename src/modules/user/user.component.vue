@@ -6,16 +6,7 @@
     </router-link>
   </div>
 
-  <div class="progress">
-    <div
-      class="progress-bar progress-bar-striped progress-bar-animated"
-      role="progressbar"
-      aria-valuenow="100"
-      aria-valuemin="0"
-      aria-valuemax="100"
-      style="width: 100%"
-    ></div>
-  </div>
+  <ProgressBar label color="success" ref="progessbar" @click="$refs.progessbar.setValue(this.v += 20)"/>
 
   <table class="table table-sm table-striped table-hover align-middle">
     <caption>
@@ -81,7 +72,7 @@ export default {
       user: "TODOS_USUARIOS",
     }),
   },
-  data: () => ({ currentPage: 3 }),
+  data: () => ({ currentPage: 3, v: 2 }),
   methods: {
     paginar(page) {
       this.currentPage = page;

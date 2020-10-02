@@ -5,7 +5,8 @@ const routes = [
         name: 'user',
         component: () => import('./user.component.vue'),
         beforeEnter: (to, from, next) => {
-            console.log(to, from, next)
+            console.log('liberar acesso a /user')
+            next()
         }
     },
     {
@@ -18,13 +19,21 @@ const routes = [
                 // /user/1/edit => edita o user 1
                 path: 'edit',
                 props: true,
-                component: () => import('./user.edit.component.vue')
+                component: () => import('./user.edit.component.vue'),
+                beforeEnter: (to, from, next) => {
+                    console.log('liberar acesso a /user/*/ (editar/criar)')
+                    next()
+                }
             },
             {
                 // /user/1/delete => deleta o user 1
                 path: 'delete',
                 props: true,
-                component: () => import('./user.delete.component.vue')
+                component: () => import('./user.delete.component.vue'),
+                beforeEnter: (to, from, next) => {
+                    console.log('liberar acesso a /user/* deletar')
+                    next()
+                }
             }
         ]
     }
