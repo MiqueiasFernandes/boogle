@@ -152,11 +152,16 @@ export default {
         })
         app.component("Alert", Alert)
         app.config.globalProperties.$alert_handler = (ac) => this.alert_component = ac;
-        app.config.globalProperties.$alert = (prefix, message, btn, color, time) => {
+        app.config.globalProperties.$alert = (prefix, message, btn, color, time, action) => {
             if (this.alert_component) {
-                this.alert_component.show(prefix, message, btn, color, time);
+                return this.alert_component.show(prefix, message, btn, color, time, action);
             }
         };
+        app.config.globalProperties.$alert_close = id => {
+            if (this.alert_component) {
+                this.alert_component.close(id)
+            }
+        }
 
         //Dialog
         app.component("Dialog", Dialog)
@@ -181,7 +186,7 @@ export default {
 
         // Helpers
         // Login Dialog
-        app.config.globalProperties.$login_dialog = (login, register) => app.config.globalProperties.$dialog(
+        app.config.globalProperties.$login_dialog = (login, register, email) => app.config.globalProperties.$dialog(
             {
                 width: "20em",
                 btn_center: true,
@@ -206,16 +211,18 @@ export default {
                         isDefault: true
                     },
                 ],
+                form_focus: email ? 'password' : 'login',
                 form: new FormBuilder()
 
                     .addField('login')
                     .withIcon('person-fill')
                     .withPlaceholder('user@email.com')
+                    .withValue(email)
                     .style('margin-bottom: 0 !important;')
                     .styleLabel('border-bottom-left-radius: 0 !important; border-bottom: 0 !important;')
                     .styleInput('border-bottom-right-radius: 0 !important; border-bottom: 0 !important;')
                     .withValidation([
-                        new ValidatorRegex('\\S+@(\\S+\\.){1,}\\S+', ' ')
+                        new ValidatorRegex('^\\S+@(\\S+\\.){1,}\\S+$', ' ')
                     ])
 
                     .addField('password')

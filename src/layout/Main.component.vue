@@ -42,7 +42,7 @@ export default {
   methods: {
     handleScroll() {
       this.nav_fixed =
-        (document.documentElement.scrollTop || document.body.scrollTop) > 0;
+        (document.documentElement.scrollTop || document.body.scrollTop) > 100;
     },
     toggleSidebar() {
       this.$refs.sidebar.toggle();

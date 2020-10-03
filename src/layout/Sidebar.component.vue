@@ -50,10 +50,9 @@
                 :color="button.color"
                 v-for="(button, i) in collapse.buttons"
                 :key="i"
-                v-tooltip="button.label"
                 @click="handle(button.label)"
               >
-                <Icon btn :name="button.icon" />
+                <Icon btn :name="button.icon" v-tooltip="button.label" />
               </Button>
             </div>
           </div>

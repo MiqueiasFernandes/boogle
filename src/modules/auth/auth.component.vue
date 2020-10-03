@@ -12,7 +12,7 @@
 import { mapGetters } from "vuex";
 
 export default {
-  data: () => ({ dialog: null, wait: false }),
+  data: () => ({ dialog: null, wait: false, email: null }),
   props: {
     text_muted: {
       type: Boolean,
@@ -34,6 +34,9 @@ export default {
     },
   },
   mounted() {
+    if (this.$route.query && this.$route.query.email) {
+      this.email = this.$route.query.email;
+    }
     if (this.onLogin) {
       this.showDialog();
     }
@@ -50,7 +53,11 @@ export default {
     },
 
     showDialog() {
-      this.dialog = this.$login_dialog(this.loginHandler, this.registerHandler);
+      this.dialog = this.$login_dialog(
+        this.loginHandler,
+        this.registerHandler,
+        this.email
+      );
     },
 
     loginHandler(form) {
@@ -76,7 +83,7 @@ export default {
         this.$router.push("/");
       } else if (this.dialog) {
         this.dialog.resetValidation();
-        this.dialog.notify("Tente nvamente!");
+        this.dialog.notify("Tente novamente!", "color: red;");
       }
     },
   },

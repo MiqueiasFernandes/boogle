@@ -9,8 +9,13 @@
   >
     <strong class="ml-2" v-if="alert.prefix">{{ alert.prefix }}</strong>
     {{ alert.message }}
-    <button v-if="alert.btn" class="btn btn-sm" :class="'btn-' + alert.color"
-    style="padding-top: .07rem; padding-bottom: .07rem; margin-left: 1em">
+    <button
+      v-if="alert.btn"
+      class="btn btn-sm"
+      :class="'btn-' + alert.color"
+      @click="alert.action && alert.action()"
+      style="padding-top: 0.07rem; padding-bottom: 0.07rem; margin-left: 1em"
+    >
       {{ alert.btn }}
     </button>
     <button
@@ -25,7 +30,6 @@
 </template>
 
 <script>
-
 export default {
   props: {
     time: {
@@ -46,13 +50,14 @@ export default {
   }),
 
   methods: {
-    show(prefix, message, btn, color = "warning", time = 0) {
+    show(prefix, message, btn, color = "warning", time = 0, action) {
       const id = this.alert_id + "-" + this.count++;
-      this.alerts.push({ id, color, prefix, message, btn });
+      this.alerts.push({ id, color, prefix, message, btn, action });
       const t = time ? time : this.time;
       if (t && t > 0) {
         setTimeout(() => this.close(id), t * 1000);
       }
+      return id;
     },
 
     close(id) {

@@ -30,6 +30,9 @@
           <p v-if="config.text">
             {{ config.text }}
           </p>
+          <p v-if="config.note" :style="config.note_style">
+            {{ config.note }}
+          </p>
 
           <form v-if="config.form" @submit="close('default')" novalidate>
             <div
@@ -70,6 +73,17 @@
                 aria-describedby="addon-wrapping"
                 @keydown.enter="close('default')"
               />
+              <span
+                v-if="input.typep === 'password'"
+                @click="toogleEye(input)"
+                class="input-group-text"
+                style="
+                  border-top-left-radius: 0px !important;
+                  border-top-right-radius: 0 !important;
+                "
+              >
+                <Icon :name="input.type === 'text' ? 'eye-slash' : 'eye'"
+              /></span>
               <div
                 v-if="
                   config.form_val &&
@@ -134,6 +148,13 @@ export default {
     };
   },
   methods: {
+    toogleEye(input) {
+      if (input.type === "text") {
+        input.type = "password";
+      } else {
+        input.type = "text";
+      }
+    },
     getInstance() {
       if (this.instance) {
         return this.instance;
@@ -152,8 +173,11 @@ export default {
       const i = this.getInstance();
       if (i) {
         i.show();
-        if (this.config.form) {
-          setTimeout(() => this.$refs["input-0-ref"].focus(), 1000);
+        if (this.config.form && this.config.form_focus) {
+          setTimeout(
+            () => document.getElementById(this.config.form_focus).focus(),
+            1000
+          );
         }
       }
     },
@@ -165,9 +189,10 @@ export default {
       }
     },
 
-    notify(text) {
+    notify(text, style) {
       if (this.config) {
-        this.config.text = text;
+        this.config.note = text;
+        this.config.note_style = style;
       }
     },
 
@@ -215,6 +240,11 @@ export default {
           if (!input.label) {
             input.label = input.id;
           }
+          input.typep = input.type;
+          if (input.type === "password") {
+            input.eyemode === "eye";
+          }
+          config.form_focus = config.form_focus || input.id;
           val = val || input.validate;
         });
         config.form_validate = val;

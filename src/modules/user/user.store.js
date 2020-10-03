@@ -33,18 +33,19 @@ const mutations = {
 const actions = {
 
     addUser(context, payload) {
-        console.log('register user', context, payload)
-        // return axios.post('/api/users/register/', payload)
-        //   .then(response => {
-        //     if (response.data.status === 210) {
-        //       context.commit('setValidationEmail', false)
-        //     } else {
-        //       context.commit('setValidationEmail', true)
-        //       context.commit('login')
-        //       context.commit('setProfile', response.data)
-        //     }
-        //   })
-        //   .catch(e => { console.log(e) })
+        return axios.post(API.API_USER + '/register/', payload)
+            .then(response => {
+                if (response) {
+                    if (response.status === 201) {
+                        return 201;
+                    } else if (response.data && response.data.status === 210) {
+                        return 210;
+                    }
+                    return 1
+                } else {
+                    return 2
+                }
+            })
     },
 
     async getCurrentUser(context, discrete) {
