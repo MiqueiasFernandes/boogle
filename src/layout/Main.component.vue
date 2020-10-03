@@ -1,7 +1,7 @@
 <template>
   <Toast style="z-index: 100" />
   <Sidebar ref="sidebar" />
-  <Navbar ref="navbar" :fixed="nav_fixed" />
+  <Navbar ref="navbar" @toggle="toggleSidebar" :fixed="nav_fixed" />
   <div
     class="container shadow-sm p-5"
     :class="{ container_nav_fix: nav_fixed, container_nav: !nav_fixed }"
@@ -28,6 +28,13 @@ export default {
   },
   mounted() {
     window.addEventListener("scroll", this.handleScroll);
+
+    // Flux:
+    // 1) user non authenticated
+    // 1.1) try get user
+    // 1.1.a) sucess update `is_logged` and profile
+    // 1.1.b) error do nothing
+    this.$store.dispatch("getCurrentUser", true);
   },
   unmounted() {
     window.removeEventListener("scroll", this.handleScroll);
@@ -38,7 +45,7 @@ export default {
         (document.documentElement.scrollTop || document.body.scrollTop) > 0;
     },
     toggleSidebar() {
-      this.$refs.sidebar.open();
+      this.$refs.sidebar.toggle();
     },
     closeSidebar() {
       this.$refs.sidebar.close();

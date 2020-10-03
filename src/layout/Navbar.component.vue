@@ -37,16 +37,16 @@
         <ul class="navbar-nav mr-auto mb-2 mb-lg-0">
           <li class="nav-item">
             <router-link to="/" class="nav-link" active-class="active">
-              <Icon icon="house" btn fill />Home
+              <Icon name="house" btn fill />Home
             </router-link>
           </li>
           <li class="nav-item">
             <router-link to="/user" class="nav-link" active-class="active">
-              <Icon icon="people" btn fill />Users
+              <Icon name="people" btn fill />Users
             </router-link>
           </li>
         </ul>
-        <div class="enditems">
+        <div class="d-flex justify-content-evenly">
           <div class="input-group mr-3" style="width: 20rem">
             <input
               class="form-control"
@@ -54,40 +54,69 @@
               placeholder="Search"
               aria-label="Search"
             />
-            <button v-btn:success.outline>
-              <Icon icon="search" btn />
-            </button>
+            <Button success outline>
+              <Icon name="search" btn />
+            </Button>
           </div>
-          <button @click="login" v-btn.outline>
-            <Icon icon="person" btn />
-          </button>
+          <Button
+            v-if="!current_user || !current_user.avatar"
+            @click="login"
+            :outline="!is_authenticated"
+          >
+            <Icon name="person" btn />
+          </Button>
+
+          <img
+            class="avatar rounded-circle"
+            v-if="current_user && current_user.avatar"
+            :src="'http://localhost:8000' + current_user.avatar"
+            @click="toggle"
+          />
         </div>
       </div>
     </div>
   </nav>
+
+  <AuthComponent :text_muted="true" ref="auth" hidden />
 </template>
 
 <script>
+import { mapGetters } from "vuex";
+import AuthComponent from "../modules/auth/auth.component";
+
 export default {
+  emits: ["toggle"],
+  components: {
+    AuthComponent,
+  },
   props: {
     fixed: {
       type: Boolean,
       default: false,
     },
   },
+  computed: {
+    ...mapGetters({
+      is_authenticated: "IS_AUTH",
+      current_user: "USER_CURRENT",
+    }),
+  },
   methods: {
     login() {
-      console.log("rotear /login");
+      if (this.is_authenticated) {
+        this.toggle();
+      } else {
+        this.$refs.auth.showDialog();
+      }
+    },
+    toggle() {
+      this.$emit("toggle");
     },
   },
 };
 </script>
 
 <style scoped>
-.enditems {
-  display: flex;
-  justify-content: space-evenly;
-}
 .custom {
   z-index: 100;
   text-align: center;
@@ -97,5 +126,10 @@ export default {
 }
 .custom {
   z-index: 1030;
+}
+.avatar {
+  width: 2.7rem;
+  height: 2.7rem;
+  border: 0.3rem solid lightgray;
 }
 </style>

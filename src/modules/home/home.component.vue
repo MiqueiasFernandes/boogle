@@ -26,12 +26,17 @@
     </ul>
   </div>
 
-  <button @click="$alert('prefix', 'message', 'btn', 'dark', 5)" v-btn>
+  <Button sm secondary @click="$alert('prefix', 'message', 'btn', 'dark', 5)">
     alert
-  </button>
-  <button @click="$toast('title', 'message', 'detail')" v-btn:success>
+  </Button>
+  <Button
+    lg
+    color="warning"
+    outline
+    @click="$toast('title', 'message', 'detail')"
+  >
     toast
-  </button>
+  </Button>
 
   <div v-alert.closeable><strong>warning!</strong> this is a alert.</div>
   <div v-alert:info><strong>show!</strong> this is a alert ok.</div>

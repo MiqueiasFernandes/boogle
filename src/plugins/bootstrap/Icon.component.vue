@@ -1,5 +1,6 @@
 <template>
-  <svg ref="svg"
+  <svg
+    ref="svg"
     :class="'bi' + (color ? ' text-' + color : '')"
     :width="btn ? '20' : size"
     :height="btn ? '20' : size"
@@ -9,7 +10,7 @@
       :xlink:href="
         require('@/assets/bootstrap-icons.svg') +
         '#' +
-        icon +
+        name +
         (fill ? '-fill' : '')
       "
     />
@@ -19,15 +20,17 @@
 <script>
 export default {
   props: {
-    icon: String,
     fill: Boolean,
     color: {
       type: String,
     },
-    size: {
-      default: '32'
+    name: {
+      type: String,
     },
-    btn: Boolean
+    size: {
+      default: "32",
+    },
+    btn: Boolean,
   },
 };
 </script>

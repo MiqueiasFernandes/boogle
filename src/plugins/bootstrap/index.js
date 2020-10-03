@@ -1,6 +1,7 @@
 import "bootstrap/dist/css/bootstrap.min.css"
 import bootstrap from "bootstrap/dist/js/bootstrap.bundle.js"
 
+import Button from './Button.component.vue'
 import Icon from './Icon.component.vue'
 import Alert from './Alert.component.vue'
 import Dialog from './Dialog.component.vue'
@@ -60,20 +61,21 @@ export default {
         app.component("ProgressBar", ProgressBar)
 
         //Button
-        app.directive('btn', {
-            mounted(el, b) {
-                var type = b.arg || 'primary'
-                if (b.modifiers) {
-                    type = b.modifiers.outline ? 'outline-' + type : type
-                    type += b.modifiers.lg ? ' btn-lg' : ''
-                    type += b.modifiers.sm ? ' btn-sm' : ''
-                }
-                ('btn btn-' + type).split(' ').forEach(c => el.classList.add(c))
-            },
-            updated() {
-                /* FIX IT: on updated elem lose btn classes!!! */
-            }
-        })
+        app.component("Button", Button)
+        // app.directive('btn', {
+        //     mounted(el, b) {
+        //         var type = b.arg || 'primary'
+        //         if (b.modifiers) {
+        //             type = b.modifiers.outline ? 'outline-' + type : type
+        //             type += b.modifiers.lg ? ' btn-lg' : ''
+        //             type += b.modifiers.sm ? ' btn-sm' : ''
+        //         }
+        //         ('btn btn-' + type).split(' ').forEach(c => el.classList.add(c))
+        //     },
+        //     updated() {
+        //         /* FIX IT: on updated elem lose btn classes!!! */
+        //     }
+        // })
 
         //Badge
         app.directive('badge', {
@@ -129,7 +131,9 @@ export default {
                 var type = 'spinner-' + (b.modifiers.grow ? 'grow' : 'border')
                 type += b.modifiers.sm ? (' ' + type + '-sm') : ''
                 const color = b.arg ? (' text-' + b.arg) : ''
-                el.classList.add(type + color)
+                const classes = type + color
+                classes.split(' ')
+                    .forEach(c => el.classList.add(c))
                 el.setAttribute('role', "status")
                 el.innerHtml = '<span class="sr-only">Loading...</span>'
             }

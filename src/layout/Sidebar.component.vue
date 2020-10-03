@@ -1,14 +1,11 @@
 <template>
-  <Icon
-    @click="toggle"
-    size="40"
-    class="btnToggle bg-light rounded-circle"
-    :class="{ fechars: opened }"
-    icon="chevron-left"
-  />
   <nav class="shadow sidebar bg-light" :class="{ hidden: opened }">
     <div class="container-fluid">
-      use info {{ opened }}
+<span v-if="current_user">
+      nome: {{ current_user.full_name  }}
+      email: {{ current_user.email }}
+      <Button>logout</Button>
+</span>
       <div class="accordion" id="accordion">
         <div
           class="card"
@@ -29,7 +26,7 @@
               >
                 {{ collapse.title }}
                 <Icon
-                  icon="chevron-down"
+                  name="chevron-down"
                   class="alter"
                   :class="{ opened: collapse.open }"
                 />
@@ -52,20 +49,37 @@
 </template>
 
 <script>
+import { mapGetters } from "vuex";
 export default {
+  computed: {
+    ...mapGetters({
+      is_authenticated: "IS_AUTH",
+      current_user: "USER_CURRENT",
+    }),
+  },
+
   data: () => ({
     opened: false,
-    collapses: "A,B,C,D,E".split(",").map((c, i) => ({
+    collapses: "A,B,C".split(",").map((c, i) => ({
       title: "title" + c,
       text: "text" + c,
       id: "collapse-" + i,
     })),
   }),
+
   mounted() {
     this.close();
     this.mudar(this.collapses[0]);
   },
-
+  watch: {
+    current_user(user) {
+      if (user) {
+        console.log(user)
+        this.open();
+        setTimeout(this.close, 1000);
+      }
+    },
+  },
   methods: {
     openFirst() {
       setTimeout(() => {
@@ -73,6 +87,7 @@ export default {
         this.collapses[0].open = true;
       }, 600);
     },
+
     hideAll() {
       this.collapses.forEach((c) => {
         c.open = false;
@@ -83,6 +98,7 @@ export default {
         c.collapse.hide();
       });
     },
+
     mudar(collapse) {
       this.hideAll();
       collapse.open =
@@ -92,16 +108,23 @@ export default {
         this.openFirst();
       }
     },
+
     open() {
+      if (!this.is_authenticated) {
+        return false;
+      }
       return (this.opened = true);
     },
+
     close() {
-      this.opened = false;
-      return this.opened;
+      return (this.opened = false);
     },
+
     toggle() {
-      return (this.opened = this.opened ? this.close() : this.open());
+      this.opened = this.opened ? this.close() : this.open();
+      return this.toggle;
     },
+
     status() {
       return this.opened;
     },
@@ -124,7 +147,7 @@ export default {
 }
 
 .alter {
-  transition: transform 0.5s;
+  transition: transform 0.3s;
 }
 
 .sidebar {
@@ -135,14 +158,6 @@ export default {
   top: 0;
   padding: 6rem 0 0 0.3rem;
   right: -100%;
-  transition: right 1s;
-}
-
-.btnToggle {
-  z-index: 1029;
-  transition: all 0.5s;
-  position: fixed;
-  right: 2rem;
-  top: 8rem;
+  transition: right 0.5s;
 }
 </style>

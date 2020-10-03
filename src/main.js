@@ -4,6 +4,11 @@ import router from './plugins/router'
 import store from './plugins/store'
 import boostrap from './plugins/bootstrap'
 
+import axios from 'axios'
+axios.defaults.xsrfCookieName = 'csrftoken'
+axios.defaults.xsrfHeaderName = 'X-CSRFToken'
+axios.defaults.withCredentials = true
+
 const root = createApp(App)
     .use(store)
     .use(router)

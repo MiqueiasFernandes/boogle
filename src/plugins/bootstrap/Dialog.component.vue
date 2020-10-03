@@ -8,7 +8,7 @@
       <div class="modal-content shadow-lg">
         <div class="modal-header">
           <h5 class="modal-title d-flex align-items-center" v-if="config">
-            <Icon v-if="config.icon && !loading" :icon="config.icon" />
+            <Icon v-if="config.icon && !loading" :name="config.icon" />
             <span
               v-if="loading"
               style="width: 29px; height: 29px"
@@ -43,7 +43,7 @@
                 class="input-group-text"
                 :style="input.label_style"
               >
-                <Icon :icon="input.icon" :style="input.icon_style"
+                <Icon :name="input.icon" :style="input.icon_style"
               /></span>
               <span
                 v-else
@@ -106,7 +106,7 @@
             :class="'btn-' + btn.color"
             @click="handleBtn(btn)"
           >
-            <Icon v-if="btn.icon" :icon="btn.icon" btn />
+            <Icon v-if="btn.icon" :name="btn.icon" btn />
             {{ btn.label }}
           </button>
         </div>

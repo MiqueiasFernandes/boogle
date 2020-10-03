@@ -13,10 +13,15 @@ import { mapGetters } from "vuex";
 
 export default {
   data: () => ({ dialog: null }),
-  props: ["text_muted"],
+  props: {
+    text_muted: {
+      type: Boolean,
+      default: false,
+    },
+  },
   computed: {
     ...mapGetters({
-      success: "IS_AUTH",
+      is_authenticated: "IS_AUTH",
     }),
     onLogin: (t) => t.$route.path === "/login",
     onLogout: (t) => t.$route.path === "/logout",
@@ -56,7 +61,7 @@ export default {
 
     verify() {
       this.loading(false);
-      if (this.success) {
+      if (this.is_authenticated) {
         if (this.dialog) {
           this.dialog.close();
         }
