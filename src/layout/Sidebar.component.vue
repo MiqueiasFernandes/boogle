@@ -1,7 +1,7 @@
 <template>
   <nav class="shadow sidebar bg-light" :class="{ hidden: opened }">
     <div class="container-fluid">
-      <div class="mx-3 text-center" v-if="current_user">
+      <div class="mx-3 mb-4 mt-2 text-center" v-if="current_user">
         <div>
           <strong>{{ current_user.full_name }}</strong>
         </div>
@@ -87,7 +87,11 @@ export default {
   watch: {
     is_authenticated(auth_state) {
       if (auth_state) {
-        this.$store.dispatch("getCurrentUser", true);
+        setTimeout(
+          () =>
+            !this.current_user && this.$store.dispatch("getCurrentUser", true),
+          1000
+        );
       } else {
         this.close();
       }

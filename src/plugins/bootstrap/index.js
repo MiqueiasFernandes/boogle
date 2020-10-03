@@ -90,13 +90,13 @@ export default {
         app.directive('tooltip', {
             mounted(el, b) {
                 if (b.value) {
-                    el.title = b.value
-                    if (b.arg) {
-                        el.setAttribute('data-placement', b.arg)
-                    }
-                    el.setAttribute('data-container', "body")
                     el.setAttribute('data-toggle', "tooltip")
-                    new bootstrap.Tooltip(el);
+                    new bootstrap.Tooltip(el, {
+                        title: b.value,
+                        container: "body",
+                        placement: b.arg || 'auto',
+                        boundary: 'window'
+                    });
                 }
             }
         })

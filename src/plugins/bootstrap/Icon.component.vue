@@ -32,5 +32,11 @@ export default {
     },
     btn: Boolean,
   },
+  mounted() {
+    // new this.$bootstrap.Tooltip(this.$refs.svg, {
+    //   container: "body",
+    //   placement: "bottom",
+    // });
+  },
 };
 </script>
