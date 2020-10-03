@@ -54,6 +54,7 @@
                 {{ input.label }}
               </span>
               <input
+                :ref="'input-' + i + '-ref'"
                 :id="input.id"
                 :style="input.style"
                 class="form-control"
@@ -151,6 +152,9 @@ export default {
       const i = this.getInstance();
       if (i) {
         i.show();
+        if (this.config.form) {
+          setTimeout(() => this.$refs["input-0-ref"].focus(), 1000);
+        }
       }
     },
 

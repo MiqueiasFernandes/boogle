@@ -12,7 +12,7 @@
 import { mapGetters } from "vuex";
 
 export default {
-  data: () => ({ dialog: null }),
+  data: () => ({ dialog: null, wait: false }),
   props: {
     text_muted: {
       type: Boolean,
@@ -26,12 +26,20 @@ export default {
     onLogin: (t) => t.$route.path === "/login",
     onLogout: (t) => t.$route.path === "/logout",
   },
+  watch: {
+    is_authenticated() {
+      if (this.wait) {
+        this.$router.push("/");
+      }
+    },
+  },
   mounted() {
     if (this.onLogin) {
       this.showDialog();
     }
     if (this.onLogout) {
-      this.$sore.dispatch("logout").then(() => this.$router.push("/"));
+      this.wait = true;
+      this.$store.dispatch("logout");
     }
   },
   methods: {

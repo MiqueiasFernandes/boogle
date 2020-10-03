@@ -1,5 +1,6 @@
 import axios from 'axios'
 import types from './mutation-types'
+import user_types from '../user/mutation-types'
 import auth_state from './auth.state'
 
 import API from '../../shared/api'
@@ -31,7 +32,10 @@ const actions = {
     },
     async logout(context) {
         return axios.get(API.API_AUTH_LOGOUT)
-            .then(() => context.commit(types.AUTH, auth_state.UNAUTH))
+            .then(() => {
+                context.commit(types.AUTH, auth_state.UNAUTH)
+                context.commit(user_types.CURRENT_USER, null)
+            })
             .catch(e => { console.log(e) })
     },
 }

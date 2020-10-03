@@ -1,11 +1,13 @@
 <template>
   <nav class="shadow sidebar bg-light" :class="{ hidden: opened }">
     <div class="container-fluid">
-<span v-if="current_user">
-      nome: {{ current_user.full_name  }}
-      email: {{ current_user.email }}
-      <Button>logout</Button>
-</span>
+      <div class="mx-3 text-center" v-if="current_user">
+        <div>
+          <strong>{{ current_user.full_name }}</strong>
+        </div>
+        <span class="text-muted">{{ current_user.email }}</span>
+      </div>
+
       <div class="accordion" id="accordion">
         <div
           class="card"
@@ -40,7 +42,20 @@
             :aria-labelledby="`${'heading' + collapse.id}`"
             data-parent="#accordion"
           >
-            <div class="card-body">{{ collapse.text }} {{ collapse.id }}</div>
+            <div class="card-body d-flex justify-content-around">
+              <Button
+                sm
+                outline
+                class="mx-2"
+                :color="button.color"
+                v-for="(button, i) in collapse.buttons"
+                :key="i"
+                v-tooltip="button.label"
+                @click="handle(button.label)"
+              >
+                <Icon btn :name="button.icon" />
+              </Button>
+            </div>
           </div>
         </div>
       </div>
@@ -60,27 +75,61 @@ export default {
 
   data: () => ({
     opened: false,
-    collapses: "A,B,C".split(",").map((c, i) => ({
-      title: "title" + c,
-      text: "text" + c,
-      id: "collapse-" + i,
-    })),
+    collapses: [],
   }),
 
   mounted() {
     this.close();
-    this.mudar(this.collapses[0]);
+    if (this.collapses.length > 0) {
+      this.mudar(this.collapses[0]);
+    }
   },
   watch: {
+    is_authenticated(auth_state) {
+      if (auth_state) {
+        this.$store.dispatch("getCurrentUser", true);
+      } else {
+        this.close();
+      }
+    },
     current_user(user) {
       if (user) {
-        console.log(user)
+        this.build();
         this.open();
         setTimeout(this.close, 1000);
       }
     },
   },
   methods: {
+    build() {
+      // for default user
+      const collapses = [];
+      collapses.push({
+        title: "Profie",
+        text: null,
+        id: "profile",
+        buttons: [
+          {
+            label: "Logout",
+            icon: "power",
+            color: "warning",
+          },
+          {
+            label: "Change profile",
+            icon: "droplet",
+            color: "secondary",
+          },
+          {
+            label: "Change password",
+            icon: "key",
+            color: "danger",
+          },
+        ],
+      });
+
+      this.collapses = collapses;
+    },
+
     openFirst() {
       setTimeout(() => {
         this.collapses[0].collapse.show();
@@ -97,6 +146,13 @@ export default {
         }
         c.collapse.hide();
       });
+    },
+
+    handle(label) {
+      switch (label) {
+        case "Logout":
+          this.logout();
+      }
     },
 
     mudar(collapse) {
@@ -127,6 +183,10 @@ export default {
 
     status() {
       return this.opened;
+    },
+
+    logout() {
+      this.$store.dispatch("logout");
     },
   },
 };
