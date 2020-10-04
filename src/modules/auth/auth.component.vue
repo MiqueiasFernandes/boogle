@@ -56,7 +56,8 @@ export default {
       this.dialog = this.$login_dialog(
         this.loginHandler,
         this.registerHandler,
-        this.email
+        this.email,
+        this.passwordHandler
       );
     },
 
@@ -67,6 +68,11 @@ export default {
             .dispatch("login", { email: form.login, password: form.password })
             .then(this.verify, this.verify);
       }
+    },
+
+    passwordHandler() {
+      this.$router.push("password");
+      return "cancel";
     },
 
     registerHandler() {

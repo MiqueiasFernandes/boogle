@@ -186,7 +186,7 @@ export default {
 
         // Helpers
         // Login Dialog
-        app.config.globalProperties.$login_dialog = (login, register, email) => app.config.globalProperties.$dialog(
+        app.config.globalProperties.$login_dialog = (login, register, email, reset) => app.config.globalProperties.$dialog(
             {
                 width: "20em",
                 btn_center: true,
@@ -201,6 +201,12 @@ export default {
                         close: true,
                         icon: "person-plus",
                         actionFn: register
+                    },
+                    {
+                        label: "Password",
+                        close: true,
+                        icon: "key",
+                        actionFn: reset
                     },
                     {
                         label: "Login",

@@ -14,6 +14,11 @@ const routes = [
         name: 'Register',
         component: () => import('./register.component.vue')
     },
+    {
+        path: '/password',
+        name: 'Password',
+        component: () => import('./password.component.vue')
+    },
 ]
 
 export default routes

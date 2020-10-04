@@ -51,6 +51,7 @@
                 v-for="(button, i) in collapse.buttons"
                 :key="i"
                 @click="handle(button.label)"
+                :ref="button.id"
               >
                 <Icon btn :name="button.icon" v-tooltip="button.label" />
               </Button>
@@ -113,16 +114,19 @@ export default {
         id: "profile",
         buttons: [
           {
+            id: "btn-1",
             label: "Logout",
             icon: "power",
             color: "warning",
           },
           {
+            id: "btn-2",
             label: "Change profile",
             icon: "droplet",
             color: "secondary",
           },
           {
+            id: "btn-3",
             label: "Change password",
             icon: "key",
             color: "danger",
@@ -155,6 +159,10 @@ export default {
       switch (label) {
         case "Logout":
           this.logout();
+          break;
+        case "Change password":
+          this.changepasswd();
+          break;
       }
     },
 
@@ -190,6 +198,41 @@ export default {
 
     logout() {
       this.$store.dispatch("logout");
+    },
+
+    changepasswd() {
+      this.$dialog({
+        title: "Alterar Senha",
+        icon: "key",
+        btns: [
+          {
+            label: "Cancel",
+            color: "secondary",
+            close: true,
+            icon: "x",
+          },
+          {
+            label: "Confirm",
+            close: true,
+            icon: "check",
+            actionFn: () =>
+              this.$store
+                .dispatch("updateUserPasswordEmail", {
+                  email: this.current_user.email,
+                })
+                .then((result) => {
+                  if (result === "OK") {
+                    this.$refs["btn-3"].$el.setAttribute("disabled", true);
+                    this.$alert(
+                      "Instruções para alteração foram enviadas para seu email."
+                    );
+                  } else {
+                    this.$alert("Falhou ao tentar reenviar email.");
+                  }
+                }),
+          },
+        ],
+      });
     },
   },
 };
