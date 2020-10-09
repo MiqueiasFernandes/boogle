@@ -122,7 +122,7 @@ export default {
           {
             id: "btn-2",
             label: "Change profile",
-            icon: "droplet",
+            icon: "tools",
             color: "secondary",
           },
           {

@@ -27,6 +27,7 @@ const actions = {
         context.commit(types.AUTH, auth_state.TRYAUTH)
         return axios.post(API.API_AUTH_LOGIN, payload)
             .then(() => context.commit(types.AUTH, auth_state.AUTHSUCESS))
+            .then(() =>  context.dispatch('getPermissions'))
             .catch(() => context.commit(types.AUTH, auth_state.ERRORAUTH))
 
     },

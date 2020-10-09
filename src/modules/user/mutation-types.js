@@ -2,7 +2,10 @@
 export const ADD_USER = 'ADD_USER'
 export const CURRENT_USER = 'CURRENT_USER'
 export const ACTIVATED = 'ACTIVATED'
+export const SET_ALL_USERS = 'SET_ALL_USERS'
+export const PERMISSIONS = 'PERMISSIONS'
 
 export default {
-    ADD_USER, CURRENT_USER, ACTIVATED
+    ADD_USER, PERMISSIONS, CURRENT_USER, ACTIVATED, 
+    SET_ALL_USERS
 }
